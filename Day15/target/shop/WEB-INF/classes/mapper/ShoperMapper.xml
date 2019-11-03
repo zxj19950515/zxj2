@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.dao.ShoperMapper">
+
+    <resultMap id="BaseResultMap" type="com.qf.domain.Shoper">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <arg column="pos_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="pos_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="pos_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+
+        </constructor>
+    </resultMap>
+
+    <resultMap id="baseResult" type="com.qf.domain.Shoper">
+        <id property="id" column="id"/>
+        <result property="posName" column="pos_name"/>
+        <result property="posStatus" column="pos_status"/>
+        <result property="posTime" column="pos_time"/>
+    </resultMap>
+    <select id="selectAll" parameterType="com.qf.domain.Shoper" resultMap="baseResult">
+
+        select * from shop_pos limit #{startRow},#{endRow}
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(*) from shop_pos
+    </select>
+
+    <select id="selectById" resultType="com.qf.domain.Shoper"  parameterType="java.lang.Integer" resultMap="baseResult">
+          select * from  shop_pos where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.qf.domain.Shoper" >
+
+        insert into shop_pos values
+
+        <if test="id != null or posName != null or posStatus != null or posPic != null or posTime != null ">
+            (#{id},#{posName},#{posStatus},#{posTime})
+        </if>
+
+    </insert>
+
+    <delete id="deleteById" parameterType="Integer" >
+        delete from shop_pos where id=#{id}
+
+    </delete>
+
+    <update id="updateShoper" parameterType="com.qf.domain.Shoper">
+        update shop_pos
+        <set>
+            <if test="posName != null">
+                pos_name = #{posName,jdbcType=VARCHAR},
+            </if>
+            <if test="posStatus != null">
+                pos_status = #{posStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="posTime != null">
+                pos_time = #{posTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.dao.GoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.qf.domain.Goods">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+                <arg column="shop_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="shop_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="shop_detil" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="pos_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="create_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="update_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </constructor>
+    </resultMap>
+
+    <resultMap id="baseResult" type="com.qf.domain.Goods">
+        <id property="id" column="id"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="shopStatus" column="shop_status"/>
+        <result property="shopDetil" column="shop_detil"/>
+        <result property="posId" column="pos_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <select id="selectAll" parameterType="com.qf.domain.Goods" resultMap="baseResult">
+
+        select * from goods limit #{startRow},#{endRow}
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(*) from goods
+    </select>
+
+    <select id="selectById" resultType="com.qf.domain.Goods"  parameterType="java.lang.Integer" resultMap="baseResult">
+          select * from  goods where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.qf.domain.Goods" >
+
+        insert into goods values
+
+        <if test="id != null or shopName != null or shopStatus != null or shopDetil != null or posId != null or createTime!=null or updateTime!= null">
+            (#{id},#{shopName},#{shopStatus},#{shopDetil},#{posId},#{createTime},#{updateTime})
+        </if>
+
+    </insert>
+
+    <delete id="deleteById" parameterType="Integer" >
+        delete from goods where id=#{id}
+
+    </delete>
+
+    <update id="updateGoods" parameterType="com.qf.domain.Goods">
+        update goods
+        <set>
+            <if test="shopName != null">
+                shop_name = #{shopName,jdbcType=VARCHAR},
+            </if>
+            <if test="shopStatus != null">
+                shop_status = #{shopStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="shopDetil != null">
+                shop_detail = #{shopDetil,jdbcType=VARCHAR},
+            </if>
+            <if test="posId != null">
+                pos_id = #{posId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                date_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
